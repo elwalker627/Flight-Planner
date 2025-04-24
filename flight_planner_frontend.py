@@ -5,7 +5,6 @@ import mysql.connector
 from datetime import datetime, timedelta
 
 def update_plane_schedule(plane_id, date):
-    keys = ["id", "source", "destination", "departure", "arrival", "status", "delay", "source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
     if plane_id.isdigit():
         try:
             connection = mysql.connector.connect(
@@ -30,8 +29,22 @@ def update_plane_schedule(plane_id, date):
             rows = cursor.fetchall()
             cursor.close()
             connection.close()
-            df = pd.DataFrame([{"id": row[0], "source": row[1], "destination": row[2], "source_latitude": float(row[7]), "source_longitude": float(row[8]),
-                "destination_latitude": float(row[9]), "destination_longitude": float(row[10]), "departure": row[3], "arrival": row[4]}] for row in rows)
+            df = pd.DataFrame([
+                {
+                    "id": row[0],
+                    "source": row[1],
+                    "destination": row[2],
+                    "departure": row[3],
+                    "arrival": row[4],
+                    "status": row[5],
+                    "delay": row[6],
+                    "source_latitude": float(row[7]),
+                    "source_longitude": float(row[8]),
+                    "destination_latitude": float(row[9]),
+                    "destination_longitude": float(row[10])
+                }
+                for row in rows
+            ])
             st.write(df)
             df["tooltip"] = df.apply(
                 lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
