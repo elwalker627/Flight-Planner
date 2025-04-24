@@ -43,10 +43,10 @@ if st.button("Update Schedule"):
     if new_data != None:
         st.write("New data")
         flight_data = new_data
-        rows_dicts = [dict(zip(keys, row)) for row in flight_data]
+        rows_dicts = pd.DataFrame(flight_data, columns=keys)
 
 flight_data = update_plane_schedule(plane_id, date)
-rows_dicts = [dict(zip(keys, row)) for row in flight_data]
+rows_dicts = pd.DataFrame(flight_data, columns=keys)
 
 # Add tooltip info
 flight_data["tooltip"] = flight_data.apply(
