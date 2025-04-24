@@ -30,57 +30,53 @@ def update_labels(flight_data):
     return labels_df
 
 def update_plane_schedule(plane_id, date):
-    if plane_id.isdigit():
-        try:
-            connection = mysql.connector.connect(
-                host="cs3190.cjek8eem4rj2.us-east-1.rds.amazonaws.com",
-                user="elwalker627",
-                password="cybhaz-Gabbo5-gycqiz",
-                database="CS3960",
-                port=3306
-            )
-            cursor = connection.cursor()
-            query = f"""
-                SELECT Flights.id, Source.name, Destination.name, Flights.departure_date_time, Flights.arrival_date_time, 
-                       Flights.status, Flights.delay_time, Source.latitude, Source.longitude, 
-                       Destination.latitude, Destination.longitude 
-                FROM Flights 
-                JOIN Airports Source ON Source.id = Flights.source 
-                JOIN Airports Destination ON Destination.id = Flights.destination 
-                WHERE plane = {plane_id} AND DATE(departure_date_time) = DATE('{date}')
-                ORDER BY Flights.departure_date_time ASC;
-            """
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            cursor.close()
-            connection.close()
-            df = pd.DataFrame([
-                {
-                    "id": row[0],
-                    "source": row[1],
-                    "destination": row[2],
-                    "departure": row[3],
-                    "arrival": row[4],
-                    "source_latitude": float(row[7]),
-                    "source_longitude": float(row[8]),
-                    "destination_latitude": float(row[9]),
-                    "destination_longitude": float(row[10])
-                }
-                for row in rows
-            ])
-            df["tooltip"] = df.apply(
-                lambda row: f"Flight {row['id']}:\n{row['source']} → {row['destination']}\nDep: {row['departure']} | Arr: {row['arrival']}",
-                axis=1
-            )
-            df["label"] = ""
-            df.loc[df.index[0], "label"] = "Start"
-            df.loc[df.index[-1], "label"] = "End"
-            return df, update_labels(df)
-        except Exception as e:
-            st.error(f"Database error: {e}")
-            return None, None
-    else:
-        st.warning("Plane ID must be an integer.")
+    try:
+        connection = mysql.connector.connect(
+            host="cs3190.cjek8eem4rj2.us-east-1.rds.amazonaws.com",
+            user="elwalker627",
+            password="cybhaz-Gabbo5-gycqiz",
+            database="CS3960",
+            port=3306
+        )
+        cursor = connection.cursor()
+        query = f"""
+            SELECT Flights.id, Source.name, Destination.name, Flights.departure_date_time, Flights.arrival_date_time, 
+                    Flights.status, Flights.delay_time, Source.latitude, Source.longitude, 
+                    Destination.latitude, Destination.longitude 
+            FROM Flights 
+            JOIN Airports Source ON Source.id = Flights.source 
+            JOIN Airports Destination ON Destination.id = Flights.destination 
+            WHERE plane = {plane_id} AND DATE(departure_date_time) = DATE('{date}')
+            ORDER BY Flights.departure_date_time ASC;
+        """
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        df = pd.DataFrame([
+            {
+                "id": row[0],
+                "source": row[1],
+                "destination": row[2],
+                "departure": row[3],
+                "arrival": row[4],
+                "source_latitude": float(row[7]),
+                "source_longitude": float(row[8]),
+                "destination_latitude": float(row[9]),
+                "destination_longitude": float(row[10])
+            }
+            for row in rows
+        ])
+        df["tooltip"] = df.apply(
+            lambda row: f"Flight {row['id']}:\n{row['source']} → {row['destination']}\nDep: {row['departure']} | Arr: {row['arrival']}",
+            axis=1
+        )
+        df["label"] = ""
+        df.loc[df.index[0], "label"] = "Start"
+        df.loc[df.index[-1], "label"] = "End"
+        return df, update_labels(df)
+    except Exception as e:
+        st.error(f"Database error: {e}")
         return None, None
 
 st.title("Add Event")
