@@ -60,7 +60,7 @@ arc_layer = pdk.Layer(
     "ArcLayer",
     data=flight_data,
     get_source_position=["source_longitude", "source_latitude"],
-    get_target_position=["dest_longitude", "dest_latitude"],
+    get_target_position=["destination_longitude", "destination_latitude"],
     get_width=8,
     get_tilt=10,
     get_source_color=RED_RGB,
