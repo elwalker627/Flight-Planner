@@ -1,6 +1,27 @@
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
+import mysql.connector
+from datetime import datetime
+
+def update_plane_schedule(plane_id, date):
+    if isinstance(plane_id, int):
+        connection = mysql.connector.connect(
+            host="cs3190.cjek8eem4rj2.us-east-1.rds.amazonaws.com",
+            user="elwalker627",
+            password="cybhaz-Gabbo5-gycqiz",
+            database="CS3960",
+            port=3306
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM Flights WHERE plane=%s AND DATE(departure_date_time)=%s;", (plane_id, date))
+        returner = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return returner
+    else:
+        return None
+    
 
 # Sample flight data (you'd use your real data here)
 flight_data = pd.DataFrame([
@@ -12,7 +33,12 @@ flight_data = pd.DataFrame([
 
 st.title("Flight Schedule Viewer")
 
-plane_id = st.text_input("Enter Plane ID:", "N12345")
+plane_id = st.text_input("Enter Plane ID:", "1")
+if st.button("Update Schedule"):
+    date = datetime.now()
+    new_data = update_plane_schedule(plane_id, date)
+    if new_data != None:
+        flight_data = new_data
 
 # Filter your real dataset here
 plane_flights = flight_data  # simulate with full data for now
