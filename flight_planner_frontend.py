@@ -5,6 +5,30 @@ import pydeck as pdk
 import mysql.connector
 from datetime import datetime, timedelta
 
+def update_labels(flight_data):
+    labels = []
+
+    # Add "Start" label at first flight's **source**
+    if len(flight_data) > 0:
+        first = flight_data.iloc[0]
+        labels.append({
+            "label": "Start",
+            "lat": first["source_latitude"],
+            "lon": first["source_longitude"]
+        })
+
+    # Add "End" label at last flight's **destination**
+    if len(flight_data) > 1:
+        last = flight_data.iloc[-1]
+        labels.append({
+            "label": "End",
+            "lat": last["destination_latitude"],
+            "lon": last["destination_longitude"]
+        })
+
+    labels_df = pd.DataFrame(labels)
+    return labels_df
+
 def update_plane_schedule(plane_id, date):
     if plane_id.isdigit():
         try:
@@ -51,23 +75,23 @@ def update_plane_schedule(plane_id, date):
             df["label"] = ""
             df.loc[df.index[0], "label"] = "Start"
             df.loc[df.index[-1], "label"] = "End"
-            return df
+            return df, update_labels(df)
         except Exception as e:
             st.error(f"Database error: {e}")
-            return None
+            return None, None
     else:
         st.warning("Plane ID must be an integer.")
-        return None
+        return None, None
 
 # Streamlit UI
 st.title("Flight Schedule Viewer")
 plane_id = st.text_input("Enter Plane ID:", "3")
 date = st.text_input("Enter Date (YYYY-MM-DD):", "2025-04-25")
 
-flight_data = None
+flight_data, labels = None, None
 
 if st.button("Update Schedule"):
-    flight_data = update_plane_schedule(plane_id, date)
+    flight_data, labels = update_plane_schedule(plane_id, date)
 
     if flight_data is not None and not flight_data.empty:
 
@@ -96,11 +120,12 @@ if st.button("Update Schedule"):
 
         text_layer = pdk.Layer(
             "TextLayer",
-            data=flight_data[flight_data["label"] != ""],  # Only label rows with text
-            get_position=["source_longitude", "source_latitude"],  # or ["source_lon", "source_lat"]
+            data=labels,
+            get_position=["lon", "lat"],
             get_text="label",
             get_size=20,
-            get_color=[0, 0, 0],
+            get_color=[255, 255, 255],
+            get_alignment_baseline="'top'",
             background=True,
         )
 
