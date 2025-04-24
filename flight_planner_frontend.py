@@ -36,8 +36,6 @@ def update_plane_schedule(plane_id, date):
                     "destination": row[2],
                     "departure": row[3],
                     "arrival": row[4],
-                    "status": row[5],
-                    "delay": row[6],
                     "source_latitude": float(row[7]),
                     "source_longitude": float(row[8]),
                     "destination_latitude": float(row[9]),
