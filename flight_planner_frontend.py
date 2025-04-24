@@ -53,6 +53,7 @@ flight_data["tooltip"] = flight_data.apply(
     lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
     axis=1
 )
+flight_data["tooltip"] = flight_data["tooltip"].astype(str)
 st.write("Tooltip:", flight_data)
 st.write(flight_data.dtypes)
 
