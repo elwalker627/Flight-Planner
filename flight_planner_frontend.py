@@ -5,6 +5,7 @@ import mysql.connector
 from datetime import datetime, timedelta
 
 def update_plane_schedule(plane_id, date):
+    keys = ["id", "source", "destination", "departure", "arrival", "status", "delay", "source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
     if plane_id.isdigit():
         connection = mysql.connector.connect(
             host="cs3190.cjek8eem4rj2.us-east-1.rds.amazonaws.com",
@@ -20,6 +21,7 @@ def update_plane_schedule(plane_id, date):
         returner = cursor.fetchall()
         cursor.close()
         connection.close()
+        returner = pd.DataFrame(returner, columns=keys)
         st.write("Returner:", returner)
         return returner
     else:
@@ -28,8 +30,6 @@ def update_plane_schedule(plane_id, date):
 
 # Sample flight data (you'd use your real data here)
 flight_data = None
-keys = ["id", "source", "destination", "departure", "arrival", "status", "delay", "source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
-true_data = None
 
 print("Starting app")
 st.title("Flight Schedule Viewer")
@@ -43,13 +43,11 @@ if st.button("Update Schedule"):
     if new_data != None:
         st.write("New data")
         flight_data = new_data
-        true_data = pd.DataFrame(flight_data, columns=keys)
 
 flight_data = update_plane_schedule(plane_id, date)
-true_data = pd.DataFrame(flight_data, columns=keys)
 
 # Add tooltip info
-true_data["tooltip"] = true_data.apply(
+flight_data["tooltip"] = flight_data.apply(
     lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
     axis=1
 )
@@ -57,7 +55,7 @@ true_data["tooltip"] = true_data.apply(
 # ArcLayer for flight paths
 arc_layer = pdk.Layer(
     "ArcLayer",
-    data=true_data,
+    data=flight_data,
     get_source_position=["source_lat", "source_lon"],
     get_target_position=["dest_lat", "dest_lon"],
     get_source_color=[0, 128, 255],
@@ -73,7 +71,7 @@ RED_RGB = [240, 100, 0, 40]
 
 arc_layer = pdk.Layer(
     "ArcLayer",
-    data=true_data,
+    data=flight_data,
     get_source_position=["source_lon", "source_lat"],
     get_target_position=["dest_lon", "dest_lat"],
     get_width=8,
@@ -87,7 +85,7 @@ arc_layer = pdk.Layer(
 # Number labels (optional)
 text_layer = pdk.Layer(
     "TextLayer",
-    data=true_data,
+    data=flight_data,
     get_position=["source_lon", "source_lat"],
     get_text="flight_num",
     get_size=20,
