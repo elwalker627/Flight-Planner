@@ -33,7 +33,7 @@ def update_plane_schedule(plane_id, date):
             df = pd.DataFrame(rows, columns=keys)
             float_cols = ["source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
             df[float_cols] = df[float_cols].astype(float)
-            df["tooltip"] = df.apply(
+            df.apply(
                 lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
             )
