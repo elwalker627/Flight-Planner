@@ -98,7 +98,6 @@ method = st.selectbox("Handle Method", ["Cancel", "Delay"])
 
 if method:
     method_data, labels = update_plane_schedule("3", "2025-04-25")
-    st.write(method_data)
     n = len(method_data)
     colors = np.linspace(0, 255, n).astype(int)
 
