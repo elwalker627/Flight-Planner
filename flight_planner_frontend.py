@@ -47,7 +47,7 @@ def update_plane_schedule(plane_id, date):
                 lambda row: f"Flight {row['id']}:\n{row['source']} → {row['destination']}\nDep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
             )
-            df["label"] = [str(i+1) for i in range(len(flight_data))]
+            df["label"] = [str(i+1) for i in range(len(df))]
             return df
         except Exception as e:
             st.error(f"Database error: {e}")
