@@ -53,20 +53,6 @@ flight_data["tooltip"] = flight_data.apply(
 )
 st.write("Tooltip:", flight_data)
 
-# ArcLayer for flight paths
-arc_layer = pdk.Layer(
-    "ArcLayer",
-    data=flight_data,
-    get_source_position=["source_lat", "source_lon"],
-    get_target_position=["dest_lat", "dest_lon"],
-    get_source_color=[0, 128, 255],
-    get_target_color=[255, 0, 128],
-    auto_highlight=True,
-    width_scale=0.0001,
-    get_width=5,
-    pickable=True,
-)
-
 GREEN_RGB = [0, 255, 0, 40]
 RED_RGB = [240, 100, 0, 40]
 
@@ -81,18 +67,6 @@ arc_layer = pdk.Layer(
     get_target_color=GREEN_RGB,
     pickable=True,
     auto_highlight=True,
-)
-
-# Number labels (optional)
-text_layer = pdk.Layer(
-    "TextLayer",
-    data=flight_data,
-    get_position=["source_lon", "source_lat"],
-    get_text="flight_num",
-    get_size=20,
-    get_color=[0, 0, 0],
-    get_angle=0,
-    background=True,
 )
 
 # Deck map setup
