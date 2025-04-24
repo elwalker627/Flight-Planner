@@ -58,8 +58,8 @@ RED_RGB = [240, 100, 0, 40]
 arc_layer = pdk.Layer(
     "ArcLayer",
     data=plane_flights,
-    get_source_position=["source_lat", "source_lon"],
-    get_target_position=["dest_lat", "dest_lon"],
+    get_source_position=["source_lon", "source_lat"],
+    get_target_position=["dest_lon", "dest_lat"],
     get_width="S000 * 2",
     get_tilt=15,
     get_source_color=RED_RGB,
