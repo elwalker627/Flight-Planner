@@ -57,6 +57,7 @@ if st.button("Update Schedule"):
     flight_data = update_plane_schedule(plane_id, date)
 
     if flight_data is not None and not flight_data.empty:
+        st.write("Type of flight_data:", type(flight_data))
         st.write(flight_data.head())
 
         GREEN_RGB = [0, 255, 0, 40]
