@@ -27,8 +27,8 @@ plane_flights["tooltip"] = plane_flights.apply(
 arc_layer = pdk.Layer(
     "ArcLayer",
     data=plane_flights,
-    get_source_position=["source_lon", "source_lat"],
-    get_target_position=["dest_lon", "dest_lat"],
+    get_source_position=["source_lat", "source_lon"],
+    get_target_position=["dest_lat", "dest_lon"],
     get_source_color=[0, 128, 255],
     get_target_color=[255, 0, 128],
     auto_highlight=True,
