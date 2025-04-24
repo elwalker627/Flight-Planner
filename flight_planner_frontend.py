@@ -84,8 +84,8 @@ def update_plane_schedule(plane_id, date):
         return None, None
 
 st.title("Add Event")
-event_type = st.text_input("Event Type")
-flight_id = st.text_input("Flight ID")
+event_type = st.selectbox("Event Type", ["Crew", "Mechanical Failure", "Security Audit", "Misc."])
+flight_id = st.number_input("Flight ID", 97686)
 
 if st.button("Create Event"):
     pass
@@ -145,12 +145,15 @@ if event:
     )
 
     st.pydeck_chart(deck)
+
+    if st.button("Apply"):
+        pass
 else:
     st.warning("Select an event.")
 
 # Streamlit UI
 st.title("Flight Schedule Viewer")
-plane_id = st.text_input("Enter Plane ID:", "3")
+plane_id = st.number_input("Enter Plane ID:", 3)
 date = st.text_input("Enter Date (YYYY-MM-DD):", "2025-04-25")
 
 flight_data, labels = None, None
