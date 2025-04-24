@@ -79,6 +79,8 @@ if st.button("Update Schedule"):
         flight_data["arc_blue"] = 100  # keep blue fixed or vary too
         flight_data["arc_alpha"] = 80  # transparency
 
+        flight_data["arc_color"] = flight_data[["arc_red", "arc_green", "arc_blue", "arc_alpha"]].values.tolist()
+
         arc_layer = pdk.Layer(
             "ArcLayer",
             data=flight_data,
@@ -97,7 +99,7 @@ if st.button("Update Schedule"):
             get_position=["mid_lon", "mid_lat"],  # or ["source_lon", "source_lat"]
             get_text="label",
             get_size=20,
-            get_color=[255, 255, 255],
+            get_color=[0, 0, 0],
             background=True,
         )
 
