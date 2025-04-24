@@ -24,7 +24,6 @@ def update_plane_schedule(plane_id, date):
                 JOIN Airports Destination ON Destination.id = Flights.destination 
                 WHERE plane = {plane_id} AND DATE(departure_date_time) = DATE('{date}');
             """
-            st.write("Query:", query)
             cursor.execute(query)
             rows = cursor.fetchall()
             cursor.close()
@@ -43,7 +42,6 @@ def update_plane_schedule(plane_id, date):
                 }
                 for row in rows
             ])
-            st.write(df)
             df["tooltip"] = df.apply(
                 lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
@@ -64,12 +62,9 @@ date = st.text_input("Enter Date (YYYY-MM-DD):", "2025-04-25")
 flight_data = None
 
 if st.button("Update Schedule"):
-    st.write("Loading data...")
     flight_data = update_plane_schedule(plane_id, date)
 
     if flight_data is not None and not flight_data.empty:
-        st.write(flight_data.head())
-        st.write(flight_data["source_longitude"])
 
         GREEN_RGB = [0, 255, 0, 40]
         RED_RGB = [240, 100, 0, 40]
