@@ -60,7 +60,7 @@ arc_layer = pdk.Layer(
     data=plane_flights,
     get_source_position=["source_lon", "source_lat"],
     get_target_position=["dest_lon", "dest_lat"],
-    get_width=10,
+    get_width=8,
     get_tilt=10,
     get_source_color=RED_RGB,
     get_target_color=GREEN_RGB,
@@ -86,7 +86,7 @@ deck = pdk.Deck(
     initial_view_state=pdk.ViewState(
         latitude=39.5,
         longitude=-98.35,
-        zoom=2.5,
+        zoom=2.7,
         pitch=0,
     ),
     tooltip={"text": "{tooltip}"},
