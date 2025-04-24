@@ -14,7 +14,9 @@ def update_plane_schedule(plane_id, date):
             port=3306
         )
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM Flights WHERE plane=%s AND DATE(departure_date_time)=%s;", (plane_id, date))
+        query = f"SELECT * FROM Flights WHERE plane={plane_id} AND DATE(departure_date_time)={date};"
+        st.write("Query:", query)
+        cursor.execute(query)
         returner = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -37,7 +39,7 @@ st.title("Flight Schedule Viewer")
 
 plane_id = st.text_input("Enter Plane ID:", "1")
 if st.button("Update Schedule"):
-    st.write("Buttone clicked")
+    st.write("Button clicked")
     date = datetime.now() + timedelta(days=1)
     new_data = update_plane_schedule(plane_id, date)
     st.write(new_data)
