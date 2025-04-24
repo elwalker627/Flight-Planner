@@ -37,6 +37,7 @@ def update_plane_schedule(plane_id, date):
                 lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
             )
+            print("DF Type:", type(df))
             return df
         except Exception as e:
             st.error(f"Database error: {e}")
