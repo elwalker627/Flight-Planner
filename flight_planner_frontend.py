@@ -96,7 +96,7 @@ if st.button("Update Schedule"):
         text_layer = pdk.Layer(
             "TextLayer",
             data=flight_data[flight_data["label"] != ""],  # Only label rows with text
-            get_position=["mid_lon", "mid_lat"],  # or ["source_lon", "source_lat"]
+            get_position=["source_longitude", "source_latitude"],  # or ["source_lon", "source_lat"]
             get_text="label",
             get_size=20,
             get_color=[0, 0, 0],
