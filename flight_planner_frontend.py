@@ -12,6 +12,12 @@ flight_id = st.text_input("Flight ID")
 if st.button("Create Event"):
     pass
 
+events = []
+
+st.title("Handle Events")
+event = st.selectbox("Select Event", events)
+flight_id = st.text_input("Flight ID")
+
 def update_labels(flight_data):
     labels = []
 
@@ -97,7 +103,7 @@ date = st.text_input("Enter Date (YYYY-MM-DD):", "2025-04-25")
 
 flight_data, labels = None, None
 
-if st.button("Update Schedule"):
+if st.button("View Plane Schedule"):
     flight_data, labels = update_plane_schedule(plane_id, date)
 
     if flight_data is not None and not flight_data.empty:
