@@ -102,14 +102,14 @@ if st.button("Update Schedule"):
             st.session_state.show_inputs = True
     else:
         # Show input fields
-        plane_id = st.text_input("Plane ID")
-        flight_date = st.date_input("Flight Date")
+        event_type = st.text_input("Plane ID")
+        flight_id = st.date_input("Flight Date")
         
         # Confirm and cancel buttons
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Confirm"):
-                st.write(f"Confirmed: Plane ID {plane_id}, Date {flight_date}")
+                st.write(f"Confirmed: Plane ID {event_type}, Date {flight_id}")
                 st.session_state.show_inputs = False  # reset to hide
         with col2:
             if st.button("Cancel"):
