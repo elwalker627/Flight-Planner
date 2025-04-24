@@ -14,7 +14,7 @@ def update_plane_schedule(plane_id, date):
             port=3306
         )
         cursor = connection.cursor()
-        query = f"SELECT * FROM Flights WHERE plane={plane_id} AND DATE(departure_date_time)=DATE({date});"
+        query = f"SELECT * FROM Flights WHERE plane={plane_id} AND DATE(departure_date_time)=DATE('{date}');"
         st.write("Query:", query)
         cursor.execute(query)
         returner = cursor.fetchall()
