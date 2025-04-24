@@ -51,7 +51,6 @@ def update_plane_schedule(plane_id, date):
             df["label"] = ""
             df.loc[df.index[0], "label"] = "Start"
             df.loc[df.index[-1], "label"] = "End"
-            st.write(df)
             return df
         except Exception as e:
             st.error(f"Database error: {e}")
