@@ -124,7 +124,7 @@ if st.button("Update Schedule"):
             get_position=["lon", "lat"],
             get_text="label",
             get_size=20,
-            get_color=[255, 255, 255],
+            get_color=[0, 0, 0],
             get_alignment_baseline="'top'",
             background=True,
         )
