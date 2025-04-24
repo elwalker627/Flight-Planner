@@ -43,7 +43,7 @@ def update_plane_schedule(plane_id, date):
                 for row in rows
             ])
             df["tooltip"] = df.apply(
-                lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
+                lambda row: f"Flight {row['id']}:\n{row['source']} → {row['destination']}\nDep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
             )
             return df
