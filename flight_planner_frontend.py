@@ -89,7 +89,7 @@ if st.button("Update Schedule"):
             get_position=["source_longitude", "source_latitude"],  # label at source
             get_text="label",  # or use a new column like "label"
             get_size=16,
-            get_color=[255, 255, 255],
+            get_color=[0, 0, 0],
             get_angle=0,
             get_alignment_baseline="'bottom'",
             background=True
