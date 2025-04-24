@@ -32,10 +32,10 @@ flight_data = None
 print("Starting app")
 st.title("Flight Schedule Viewer")
 
-plane_id = st.text_input("Enter Plane ID:", "1")
+plane_id = st.text_input("Enter Plane ID:", "3")
+date = st.text_input("Enter Date:", "2025-04-25")
 if st.button("Update Schedule"):
     st.write("Button clicked")
-    date = datetime.now() + timedelta(days=1)
     new_data = update_plane_schedule(plane_id, date)
     st.write(new_data)
     if new_data != None:
