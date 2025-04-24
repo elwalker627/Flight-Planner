@@ -5,28 +5,8 @@ import pydeck as pdk
 import mysql.connector
 from datetime import datetime, timedelta
 
-# Initialize session state key
-if "show_inputs" not in st.session_state:
-    st.session_state.show_inputs = False
-
-# Show the button to start
-if not st.session_state.show_inputs:
-    if st.button("Add Flight"):
-        st.session_state.show_inputs = True
-else:
-    # Show input fields
-    event_type = st.text_input("Plane ID")
-    flight_id = st.date_input("Flight Date")
-    
-    # Confirm and cancel buttons
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Confirm"):
-            st.write(f"Confirmed: Plane ID {event_type}, Date {flight_id}")
-            st.session_state.show_inputs = False  # reset to hide
-    with col2:
-        if st.button("Cancel"):
-            st.session_state.show_inputs = False  # just hide inputs
+event_type = st.text_input("Event Type")
+flight_id = st.text_input("Flight ID")
 
 def update_labels(flight_data):
     labels = []
