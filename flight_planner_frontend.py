@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import pydeck as pdk
 import mysql.connector
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def update_plane_schedule(plane_id, date):
     if plane_id.isdigit():
@@ -38,7 +38,7 @@ st.title("Flight Schedule Viewer")
 plane_id = st.text_input("Enter Plane ID:", "1")
 if st.button("Update Schedule"):
     st.write("Buttone clicked")
-    date = datetime.now()
+    date = datetime.now() + timedelta(days=1)
     new_data = update_plane_schedule(plane_id, date)
     st.write(new_data)
     if new_data != None:
