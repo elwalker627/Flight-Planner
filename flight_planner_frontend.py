@@ -69,6 +69,8 @@ arc_layer = pdk.Layer(
     auto_highlight=True,
 )
 
+st.write(arc_layer)
+
 # Deck map setup
 deck = pdk.Deck(
     layers=[arc_layer],
