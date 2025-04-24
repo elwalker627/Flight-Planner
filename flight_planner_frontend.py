@@ -23,6 +23,21 @@ plane_flights["tooltip"] = plane_flights.apply(
     axis=1
 )
 
+data = [
+    {'start': [40.7899, -111.9791], 'end': [40.6413, -73.7781]},
+    {'start': [40.6413, -73.7781], 'end': [33.6407, -84.4277]}
+]
+
+# Define the LineLayer
+line_layer = pdk.Layer(
+    "LineLayer",
+    data,
+    get_source_position="start",  # Connects start coordinates
+    get_target_position="end",    # Connects end coordinates
+    get_color=[0, 255, 0, 100],  # Line color (RGBA)
+    get_width=2,                  # Line width
+)
+
 # ArcLayer for flight paths
 arc_layer = pdk.Layer(
     "ArcLayer",
@@ -51,7 +66,7 @@ text_layer = pdk.Layer(
 
 # Deck map setup
 deck = pdk.Deck(
-    layers=[arc_layer, text_layer],
+    layers=[line_layer, text_layer],
     initial_view_state=pdk.ViewState(
         latitude=39.5,
         longitude=-98.35,
