@@ -370,10 +370,10 @@ def create_schedule(airplanes, start_time, airports, demands, airplane_seat_aver
             continue
         next_start_time = airplane[0]
         end_time = next_start_time + timedelta(hours=distance/float(airplane[15]))
-        airplane[0] = end_time + timedelta(minutes=float(airplane[10]))
+        airplane[0] = end_time + timedelta(hours=float(airplane[10]))
         airplanes[source_airport[0]-1].remove(airplane)
         airplanes[destination_airport[0]-1].append(airplane)
-        cursor.execute("INSERT INTO Flights (source, destination, plane, departure_date_time, arrival_date_time) VALUES (%s, %s, %s, %s, %s);", (source_airport[0], destination_airport[0], airplane[1], airplane[0], end_time))
+        cursor.execute("INSERT INTO Flights (source, destination, plane, departure_date_time, arrival_date_time) VALUES (%s, %s, %s, %s, %s);", (next_start_time, destination_airport[0], airplane[1], airplane[0], end_time))
         update_seat_demand(source_airport[0], destination_airport[0], filtered_sorted, airplane_seat_average)
 
 def select_plane(airplanes, source, distance, demand, average_seats, max_end_time, history, cursor):
