@@ -31,13 +31,14 @@ def update_plane_schedule(plane_id, date):
             cursor.close()
             connection.close()
             df = pd.DataFrame(rows, columns=keys)
+            print(df)
+            print(type(df))
             float_cols = ["source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
             df[float_cols] = df[float_cols].astype(float)
-            df.apply(
+            df["tooltip"] = df.apply(
                 lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
             )
-            print("DF Type:", type(df))
             return df
         except Exception as e:
             st.error(f"Database error: {e}")
