@@ -16,7 +16,7 @@ events = []
 
 st.title("Handle Events")
 event = st.selectbox("Select Event", events)
-flight_id = st.text_input("Flight ID")
+flight_id = st.text_input("Flight ID", "1")
 
 def update_labels(flight_data):
     labels = []
