@@ -18,7 +18,7 @@ def update_plane_schedule(plane_id, date):
         returner = cursor.fetchall()
         cursor.close()
         connection.close()
-        print("Returner:", returner)
+        st.write("Returner:", returner)
         return returner
     else:
         return None
@@ -37,11 +37,11 @@ st.title("Flight Schedule Viewer")
 
 plane_id = st.text_input("Enter Plane ID:", "1")
 if st.button("Update Schedule"):
-    print("Buttone clicked")
+    st.write("Buttone clicked")
     date = datetime.now()
     new_data = update_plane_schedule(plane_id, date)
     if new_data != None:
-        print("New data")
+        st.write("New data")
         flight_data = new_data
 
 # Filter your real dataset here
