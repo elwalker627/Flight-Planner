@@ -97,7 +97,7 @@ text_layer = pdk.Layer(
 
 # Deck map setup
 deck = pdk.Deck(
-    layers=[arc_layer, text_layer],
+    layers=[arc_layer],
     initial_view_state=pdk.ViewState(
         latitude=39.5,
         longitude=-98.35,
