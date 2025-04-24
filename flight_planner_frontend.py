@@ -5,8 +5,12 @@ import pydeck as pdk
 import mysql.connector
 from datetime import datetime, timedelta
 
+st.title("Add Event")
 event_type = st.text_input("Event Type")
 flight_id = st.text_input("Flight ID")
+
+if st.button("Create Event"):
+    pass
 
 def update_labels(flight_data):
     labels = []
