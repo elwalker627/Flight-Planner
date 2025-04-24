@@ -32,6 +32,7 @@ flight_data = pd.DataFrame([
      "dest_lat": 33.6407, "dest_lon": -84.4277, "departure": "16:00", "arrival": "19:00"},
 ])
 
+print("Starting app")
 st.title("Flight Schedule Viewer")
 
 plane_id = st.text_input("Enter Plane ID:", "1")
