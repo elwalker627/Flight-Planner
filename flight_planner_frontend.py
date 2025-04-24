@@ -87,7 +87,7 @@ if st.button("Update Schedule"):
             "TextLayer",
             data=flight_data,
             get_position=["source_longitude", "source_latitude"],  # label at source
-            get_text="id",  # or use a new column like "label"
+            get_text="label",  # or use a new column like "label"
             get_size=16,
             get_color=[255, 255, 255],
             get_angle=0,
