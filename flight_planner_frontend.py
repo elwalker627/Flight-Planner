@@ -40,7 +40,7 @@ if st.button("Update Schedule"):
     st.write("Buttone clicked")
     date = datetime.now()
     new_data = update_plane_schedule(plane_id, date)
-    st.write(new_data)
+    st.write("Data:" + new_data)
     if new_data != None:
         st.write("New data")
         flight_data = new_data
