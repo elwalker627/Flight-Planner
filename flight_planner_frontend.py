@@ -86,7 +86,7 @@ deck = pdk.Deck(
     initial_view_state=pdk.ViewState(
         latitude=39.5,
         longitude=-98.35,
-        zoom=3.5,
+        zoom=2.5,
         pitch=0,
     ),
     tooltip={"text": "{tooltip}"},
