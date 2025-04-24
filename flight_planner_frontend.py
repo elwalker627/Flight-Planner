@@ -14,7 +14,7 @@ def update_plane_schedule(plane_id, date):
             port=3306
         )
         cursor = connection.cursor()
-        query = f"SELECT * FROM Flights WHERE plane={plane_id} AND DATE(departure_date_time)=DATE('{date}');"
+        query = f"SELECT Flights.id, Flights.source, Flights.destination, Flights.departure_date_time, Flights.arrival_date_time, Flights.status, Flights.delay_time, Source.latitude, Source.longitude, Destination.latitude, Destination.longitude FROM Flights JOIN Airports Source ON Source.id=Flights.source JOIN Airplorts Destination ON Destination.id=Flights.destination WHERE plane={plane_id} AND DATE(departure_date_time)=DATE('{date}');"
         st.write("Query:", query)
         cursor.execute(query)
         returner = cursor.fetchall()
@@ -28,6 +28,8 @@ def update_plane_schedule(plane_id, date):
 
 # Sample flight data (you'd use your real data here)
 flight_data = None
+keys = ["id", "source", "destination", "departure", "arrival", "status", "delay", "source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
+rows_dicts = None
 
 print("Starting app")
 st.title("Flight Schedule Viewer")
@@ -41,34 +43,21 @@ if st.button("Update Schedule"):
     if new_data != None:
         st.write("New data")
         flight_data = new_data
+        rows_dicts = [dict(zip(keys, row)) for row in flight_data]
 
 flight_data = update_plane_schedule(plane_id, date)
+rows_dicts = [dict(zip(keys, row)) for row in flight_data]
 
 # Add tooltip info
 flight_data["tooltip"] = flight_data.apply(
-    lambda row: f"Flight {row[0]}: {row[2]} → {row[1]}<br>Dep: {row[4]} | Arr: {row[5]}",
+    lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
     axis=1
-)
-
-data = [
-    {'start': [40.7899, -111.9791], 'end': [40.6413, -73.7781]},
-    {'start': [40.6413, -73.7781], 'end': [33.6407, -84.4277]}
-]
-
-# Define the LineLayer
-line_layer = pdk.Layer(
-    "LineLayer",
-    data,
-    get_source_position="start",  # Connects start coordinates
-    get_target_position="end",    # Connects end coordinates
-    get_color=[0, 255, 0, 100],  # Line color (RGBA)
-    get_width=2,                  # Line width
 )
 
 # ArcLayer for flight paths
 arc_layer = pdk.Layer(
     "ArcLayer",
-    data=plane_flights,
+    data=flight_data,
     get_source_position=["source_lat", "source_lon"],
     get_target_position=["dest_lat", "dest_lon"],
     get_source_color=[0, 128, 255],
@@ -84,7 +73,7 @@ RED_RGB = [240, 100, 0, 40]
 
 arc_layer = pdk.Layer(
     "ArcLayer",
-    data=plane_flights,
+    data=flight_data,
     get_source_position=["source_lon", "source_lat"],
     get_target_position=["dest_lon", "dest_lat"],
     get_width=8,
@@ -98,7 +87,7 @@ arc_layer = pdk.Layer(
 # Number labels (optional)
 text_layer = pdk.Layer(
     "TextLayer",
-    data=plane_flights,
+    data=flight_data,
     get_position=["source_lon", "source_lat"],
     get_text="flight_num",
     get_size=20,
