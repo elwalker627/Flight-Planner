@@ -22,6 +22,8 @@ def update_plane_schedule(plane_id, date):
         cursor.close()
         connection.close()
         returner = pd.DataFrame(returner, columns=keys)
+        cols = ["source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
+        returner[cols] = returner[cols].astype(float)
         st.write("Returner:", returner)
         return returner
     else:
