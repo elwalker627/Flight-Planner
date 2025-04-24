@@ -96,7 +96,7 @@ if st.button("Update Schedule"):
         )
 
         deck = pdk.Deck(
-            layers=[arc_layer],
+            layers=[arc_layer, text_layer],
             initial_view_state=pdk.ViewState(
                 latitude=39.5,
                 longitude=-98.35,
