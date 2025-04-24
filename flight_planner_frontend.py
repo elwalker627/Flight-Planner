@@ -51,6 +51,7 @@ flight_data["tooltip"] = flight_data.apply(
     lambda row: f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
     axis=1
 )
+st.write("Tooltip:", flight_data)
 
 # ArcLayer for flight paths
 arc_layer = pdk.Layer(
