@@ -92,6 +92,28 @@ flight_data, labels = None, None
 
 if st.button("Update Schedule"):
     flight_data, labels = update_plane_schedule(plane_id, date)
+    # Initialize session state key
+    if "show_inputs" not in st.session_state:
+        st.session_state.show_inputs = False
+
+    # Show the button to start
+    if not st.session_state.show_inputs:
+        if st.button("Add Flight"):
+            st.session_state.show_inputs = True
+    else:
+        # Show input fields
+        plane_id = st.text_input("Plane ID")
+        flight_date = st.date_input("Flight Date")
+        
+        # Confirm and cancel buttons
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Confirm"):
+                st.write(f"Confirmed: Plane ID {plane_id}, Date {flight_date}")
+                st.session_state.show_inputs = False  # reset to hide
+        with col2:
+            if st.button("Cancel"):
+                st.session_state.show_inputs = False  # just hide inputs
 
     if flight_data is not None and not flight_data.empty:
 
@@ -144,3 +166,6 @@ if st.button("Update Schedule"):
         st.pydeck_chart(deck)
     else:
         st.warning("No flight data found for that plane and date.")
+
+if st.button("Create Event"):
+    flight_data, labels = update_plane_schedule(plane_id, date)
