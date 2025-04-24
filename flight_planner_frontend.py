@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import pydeck as pdk
 import mysql.connector
 from datetime import datetime, timedelta
@@ -47,7 +48,9 @@ def update_plane_schedule(plane_id, date):
                 lambda row: f"Flight {row['id']}:\n{row['source']} → {row['destination']}\nDep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
             )
-            df["label"] = [str(i+1) for i in range(len(df))]
+            flight_data["label"] = ""
+            flight_data.loc[flight_data.index[0], "label"] = "Start"
+            flight_data.loc[flight_data.index[-1], "label"] = "End"
             return df
         except Exception as e:
             st.error(f"Database error: {e}")
@@ -68,8 +71,13 @@ if st.button("Update Schedule"):
 
     if flight_data is not None and not flight_data.empty:
 
-        GREEN_RGB = [0, 255, 0, 40]
-        RED_RGB = [240, 100, 0, 40]
+        n = len(flight_data)
+        colors = np.linspace(0, 255, n).astype(int)
+
+        flight_data["arc_red"] = colors
+        flight_data["arc_green"] = 255 - colors
+        flight_data["arc_blue"] = 100  # keep blue fixed or vary too
+        flight_data["arc_alpha"] = 80  # transparency
 
         arc_layer = pdk.Layer(
             "ArcLayer",
@@ -77,23 +85,22 @@ if st.button("Update Schedule"):
             get_source_position=["source_longitude", "source_latitude"],
             get_target_position=["destination_longitude", "destination_latitude"],
             get_width=8,
-            get_source_color=RED_RGB,
-            get_target_color=GREEN_RGB,
+            get_source_color="arc_color",
+            get_target_color="arc_color",
             pickable=True,
             auto_highlight=True,
         )
 
         text_layer = pdk.Layer(
             "TextLayer",
-            data=flight_data,
-            get_position=["source_longitude", "source_latitude"],  # label at source
-            get_text="label",  # or use a new column like "label"
-            get_size=16,
-            get_color=[0, 0, 0],
-            get_angle=0,
-            get_alignment_baseline="'bottom'",
-            background=True
+            data=flight_data[flight_data["label"] != ""],  # Only label rows with text
+            get_position=["mid_lon", "mid_lat"],  # or ["source_lon", "source_lat"]
+            get_text="label",
+            get_size=20,
+            get_color=[255, 255, 255],
+            background=True,
         )
+
 
         deck = pdk.Deck(
             layers=[arc_layer, text_layer],
