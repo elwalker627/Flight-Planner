@@ -55,7 +55,12 @@ flight_data = None
 
 if st.button("Update Schedule"):
     st.write("Loading data...")
-    flight_data = update_plane_schedule(plane_id, date)
+    flight_data = pd.DataFrame([
+    {"id": 1, "source": "SLC", "destination": "JFK", "source_latitude": 40.7899, "source_longitude": -111.9791,
+     "destination_latitude": 40.6413, "destination_longitude": -73.7781, "departure": "08:00", "arrival": "14:00"},
+    {"id": 2, "source": "JFK", "destination": "ATL", "source_latitude": 40.6413, "source_longitude": -73.7781,
+     "destination_latitude": 33.6407, "destination_longitude": -84.4277, "departure": "16:00", "arrival": "19:00"},
+])
 
     if flight_data is not None and not flight_data.empty:
         st.write(flight_data.head())
