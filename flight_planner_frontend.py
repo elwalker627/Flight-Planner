@@ -31,8 +31,8 @@ def update_plane_schedule(plane_id, date):
             cursor.close()
             connection.close()
             df = pd.DataFrame(rows, columns=keys)
-            print(df)
-            print(type(df))
+            st.write(df)
+            st.write(type(df))
             float_cols = ["source_latitude", "source_longitude", "destination_latitude", "destination_longitude"]
             df[float_cols] = df[float_cols].astype(float)
             df["tooltip"] = df.apply(
