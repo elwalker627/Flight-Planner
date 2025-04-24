@@ -49,11 +49,11 @@ if st.button("Update Schedule"):
 flight_data = update_plane_schedule(plane_id, date)
 
 # Add tooltip info
-flight_data["tooltip"] = flight_data.apply(
-    lambda row: str(f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}")
-    )
-st.write("Tooltip:", flight_data)
-st.write(flight_data.dtypes)
+# flight_data["tooltip"] = flight_data.apply(
+#     lambda row: str(f"Flight {row['id']}: {row['source']} → {row['destination']}<br>Dep: {row['departure']} | Arr: {row['arrival']}")
+#     )
+# st.write("Tooltip:", flight_data)
+# st.write(flight_data.dtypes)
 
 GREEN_RGB = [0, 255, 0, 40]
 RED_RGB = [240, 100, 0, 40]
@@ -82,7 +82,7 @@ deck = pdk.Deck(
         zoom=2.7,
         pitch=0,
     ),
-    tooltip={"text": "{tooltip}"},
+    # tooltip={"text": "{tooltip}"},
 )
 
 st.pydeck_chart(deck)
