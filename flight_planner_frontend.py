@@ -27,12 +27,7 @@ def update_plane_schedule(plane_id, date):
     
 
 # Sample flight data (you'd use your real data here)
-flight_data = pd.DataFrame([
-    {"flight_num": 1, "source": "SLC", "dest": "JFK", "source_lat": 40.7899, "source_lon": -111.9791,
-     "dest_lat": 40.6413, "dest_lon": -73.7781, "departure": "08:00", "arrival": "14:00"},
-    {"flight_num": 2, "source": "JFK", "dest": "ATL", "source_lat": 40.6413, "source_lon": -73.7781,
-     "dest_lat": 33.6407, "dest_lon": -84.4277, "departure": "16:00", "arrival": "19:00"},
-])
+flight_data = None
 
 print("Starting app")
 st.title("Flight Schedule Viewer")
@@ -47,12 +42,11 @@ if st.button("Update Schedule"):
         st.write("New data")
         flight_data = new_data
 
-# Filter your real dataset here
-plane_flights = flight_data  # simulate with full data for now
+flight_data = update_plane_schedule(plane_id, date)
 
 # Add tooltip info
-plane_flights["tooltip"] = plane_flights.apply(
-    lambda row: f"Flight {row.flight_num}: {row['source']} → {row['dest']}<br>Dep: {row['departure']} | Arr: {row['arrival']}",
+flight_data["tooltip"] = flight_data.apply(
+    lambda row: f"Flight {row[0]}: {row[2]} → {row[1]}<br>Dep: {row[4]} | Arr: {row[5]}",
     axis=1
 )
 
