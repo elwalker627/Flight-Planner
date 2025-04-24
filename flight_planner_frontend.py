@@ -29,72 +29,6 @@ def update_labels(flight_data):
     labels_df = pd.DataFrame(labels)
     return labels_df
 
-st.title("Add Event")
-event_type = st.text_input("Event Type")
-flight_id = st.text_input("Flight ID")
-
-if st.button("Create Event"):
-    pass
-
-events = []
-
-st.title("Handle Events")
-event = st.selectbox("Select Event", events)
-method = st.selectbox("Handle Method", ["Cancel", "Delay"])
-
-if method:
-    method_data = []
-    labels = update_labels(method_data)
-    n = len(method_data)
-    colors = np.linspace(0, 255, n).astype(int)
-
-    method_data["arc_red"] = colors
-    method_data["arc_green"] = 255 - colors
-    method_data["arc_blue"] = 100  # keep blue fixed or vary too
-    method_data["arc_alpha"] = 255  # transparency
-
-    method_data["arc_color"] = method_data[["arc_red", "arc_green", "arc_blue", "arc_alpha"]].values.tolist()
-    method_data["width"] = 2 + (len(method_data) - method_data.index) * 2
-
-    arc_layer = pdk.Layer(
-        "ArcLayer",
-        data=method_data,
-        get_source_position=["source_longitude", "source_latitude"],
-        get_target_position=["destination_longitude", "destination_latitude"],
-        get_width="width",
-        get_source_color="arc_color",
-        get_target_color="arc_color",
-        pickable=True,
-        auto_highlight=True,
-    )
-
-    text_layer = pdk.Layer(
-        "TextLayer",
-        data=labels,
-        get_position=["lon", "lat"],
-        get_text="label",
-        get_size=20,
-        get_color=[0, 0, 0],
-        get_alignment_baseline="'top'",
-        background=True,
-    )
-
-
-    deck = pdk.Deck(
-        layers=[arc_layer, text_layer],
-        initial_view_state=pdk.ViewState(
-            latitude=39.5,
-            longitude=-98.35,
-            zoom=3,
-            pitch=0,
-        ),
-        tooltip={"text": "{tooltip}"}
-    )
-
-    st.pydeck_chart(deck)
-else:
-    st.warning("No flight data found for that plane and date.")
-
 def update_plane_schedule(plane_id, date):
     if plane_id.isdigit():
         try:
@@ -148,6 +82,72 @@ def update_plane_schedule(plane_id, date):
     else:
         st.warning("Plane ID must be an integer.")
         return None, None
+
+st.title("Add Event")
+event_type = st.text_input("Event Type")
+flight_id = st.text_input("Flight ID")
+
+if st.button("Create Event"):
+    pass
+
+events = []
+
+st.title("Handle Events")
+event = st.selectbox("Select Event", events)
+method = st.selectbox("Handle Method", ["Cancel", "Delay"])
+
+if method:
+    method_data = update_plane_schedule(3, "2025-04-25")
+    labels = update_labels(method_data)
+    n = len(method_data)
+    colors = np.linspace(0, 255, n).astype(int)
+
+    method_data["arc_red"] = colors
+    method_data["arc_green"] = 255 - colors
+    method_data["arc_blue"] = 100  # keep blue fixed or vary too
+    method_data["arc_alpha"] = 255  # transparency
+
+    method_data["arc_color"] = method_data[["arc_red", "arc_green", "arc_blue", "arc_alpha"]].values.tolist()
+    method_data["width"] = 2 + (len(method_data) - method_data.index) * 2
+
+    arc_layer = pdk.Layer(
+        "ArcLayer",
+        data=method_data,
+        get_source_position=["source_longitude", "source_latitude"],
+        get_target_position=["destination_longitude", "destination_latitude"],
+        get_width="width",
+        get_source_color="arc_color",
+        get_target_color="arc_color",
+        pickable=True,
+        auto_highlight=True,
+    )
+
+    text_layer = pdk.Layer(
+        "TextLayer",
+        data=labels,
+        get_position=["lon", "lat"],
+        get_text="label",
+        get_size=20,
+        get_color=[0, 0, 0],
+        get_alignment_baseline="'top'",
+        background=True,
+    )
+
+
+    deck = pdk.Deck(
+        layers=[arc_layer, text_layer],
+        initial_view_state=pdk.ViewState(
+            latitude=39.5,
+            longitude=-98.35,
+            zoom=3,
+            pitch=0,
+        ),
+        tooltip={"text": "{tooltip}"}
+    )
+
+    st.pydeck_chart(deck)
+else:
+    st.warning("No flight data found for that plane and date.")
 
 # Streamlit UI
 st.title("Flight Schedule Viewer")
