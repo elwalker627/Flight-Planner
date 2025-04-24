@@ -15,7 +15,7 @@ def update_plane_schedule(plane_id, date):
             port=3306
         )
         cursor = connection.cursor()
-        query = f"SELECT Flights.id, Flights.source, Flights.destination, Flights.departure_date_time, Flights.arrival_date_time, Flights.status, Flights.delay_time, Source.latitude, Source.longitude, Destination.latitude, Destination.longitude FROM Flights JOIN Airports Source ON Source.id=Flights.source JOIN Airports Destination ON Destination.id=Flights.destination WHERE plane={plane_id} AND DATE(departure_date_time)=DATE('{date}');"
+        query = f"SELECT Flights.id, Source.name, Destination.name, Flights.departure_date_time, Flights.arrival_date_time, Flights.status, Flights.delay_time, Source.latitude, Source.longitude, Destination.latitude, Destination.longitude FROM Flights JOIN Airports Source ON Source.id=Flights.source JOIN Airports Destination ON Destination.id=Flights.destination WHERE plane={plane_id} AND DATE(departure_date_time)=DATE('{date}');"
         st.write("Query:", query)
         cursor.execute(query)
         returner = cursor.fetchall()
@@ -64,10 +64,8 @@ arc_layer = pdk.Layer(
     get_source_position=["source_longitude", "source_latitude"],
     get_target_position=["destination_longitude", "destination_latitude"],
     get_width=8,
-    get_tilt=10,
     get_source_color=RED_RGB,
     get_target_color=GREEN_RGB,
-    pickable=True,
     auto_highlight=True,
 )
 
