@@ -42,7 +42,7 @@ if st.button("Update Schedule"):
     st.write("Button clicked")
     new_data = update_plane_schedule(plane_id, date)
     st.write(new_data)
-    if new_data != None:
+    if new_data is not None:
         st.write("New data")
         flight_data = new_data
 
@@ -66,7 +66,6 @@ arc_layer = pdk.Layer(
     get_width=8,
     get_source_color=RED_RGB,
     get_target_color=GREEN_RGB,
-    auto_highlight=True,
 )
 
 # Deck map setup
@@ -78,7 +77,6 @@ deck = pdk.Deck(
         zoom=2.7,
         pitch=0,
     ),
-    # tooltip={"text": "{tooltip}"},
 )
 
 st.pydeck_chart(deck)
