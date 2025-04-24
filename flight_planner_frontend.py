@@ -5,7 +5,7 @@ import mysql.connector
 from datetime import datetime
 
 def update_plane_schedule(plane_id, date):
-    if isinstance(plane_id, int):
+    if plane_id.isdigit():
         connection = mysql.connector.connect(
             host="cs3190.cjek8eem4rj2.us-east-1.rds.amazonaws.com",
             user="elwalker627",
