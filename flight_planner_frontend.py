@@ -22,7 +22,8 @@ def update_plane_schedule(plane_id, date):
                 FROM Flights 
                 JOIN Airports Source ON Source.id = Flights.source 
                 JOIN Airports Destination ON Destination.id = Flights.destination 
-                WHERE plane = {plane_id} AND DATE(departure_date_time) = DATE('{date}');
+                WHERE plane = {plane_id} AND DATE(departure_date_time) = DATE('{date}')
+                ORDER BY Flights.departure_date_time ASC;
             """
             cursor.execute(query)
             rows = cursor.fetchall()
@@ -46,6 +47,7 @@ def update_plane_schedule(plane_id, date):
                 lambda row: f"Flight {row['id']}:\n{row['source']} → {row['destination']}\nDep: {row['departure']} | Arr: {row['arrival']}",
                 axis=1
             )
+            df["label"] = [str(i+1) for i in range(len(flight_data))]
             return df
         except Exception as e:
             st.error(f"Database error: {e}")
@@ -79,6 +81,18 @@ if st.button("Update Schedule"):
             get_target_color=GREEN_RGB,
             pickable=True,
             auto_highlight=True,
+        )
+
+        text_layer = pdk.Layer(
+            "TextLayer",
+            data=flight_data,
+            get_position=["source_longitude", "source_latitude"],  # label at source
+            get_text="id",  # or use a new column like "label"
+            get_size=16,
+            get_color=[255, 255, 255],
+            get_angle=0,
+            get_alignment_baseline="'bottom'",
+            background=True
         )
 
         deck = pdk.Deck(
