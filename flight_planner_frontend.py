@@ -96,7 +96,7 @@ st.title("Handle Events")
 event = st.selectbox("Select Event", events)
 method = st.selectbox("Handle Method", ["Cancel", "Delay"])
 
-if event:
+if event == "Cancel" or event == "Delay":
     method_data, labels = update_plane_schedule("3", "2025-04-25")
     n = len(method_data)
     colors = np.linspace(0, 255, n).astype(int)
