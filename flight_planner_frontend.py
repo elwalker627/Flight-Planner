@@ -52,6 +52,22 @@ arc_layer = pdk.Layer(
     pickable=True,
 )
 
+GREEN_RGB = [0, 255, 0, 40]
+RED_RGB = [240, 100, 0, 40]
+
+arc_layer = pdk.Layer(
+    "ArcLayer",
+    data=plane_flights,
+    get_source_position=["source_lat", "source_lon"],
+    get_target_position=["dest_lat", "dest_lon"],
+    get_width="S000 * 2",
+    get_tilt=15,
+    get_source_color=RED_RGB,
+    get_target_color=GREEN_RGB,
+    pickable=True,
+    auto_highlight=True,
+)
+
 # Number labels (optional)
 text_layer = pdk.Layer(
     "TextLayer",
@@ -66,7 +82,7 @@ text_layer = pdk.Layer(
 
 # Deck map setup
 deck = pdk.Deck(
-    layers=[line_layer, text_layer],
+    layers=[arc_layer, text_layer],
     initial_view_state=pdk.ViewState(
         latitude=39.5,
         longitude=-98.35,
