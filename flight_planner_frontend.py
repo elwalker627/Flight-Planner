@@ -77,7 +77,7 @@ if st.button("Update Schedule"):
         flight_data["arc_red"] = colors
         flight_data["arc_green"] = 255 - colors
         flight_data["arc_blue"] = 100  # keep blue fixed or vary too
-        flight_data["arc_alpha"] = 80  # transparency
+        flight_data["arc_alpha"] = 255  # transparency
 
         flight_data["arc_color"] = flight_data[["arc_red", "arc_green", "arc_blue", "arc_alpha"]].values.tolist()
         flight_data["width"] = 6 + (len(flight_data) - flight_data.index) * 2
