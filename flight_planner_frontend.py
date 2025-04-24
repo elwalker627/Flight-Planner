@@ -52,6 +52,7 @@ flight_data["tooltip"] = flight_data.apply(
     axis=1
 )
 st.write("Tooltip:", flight_data)
+st.write(flight_data.dtypes)
 
 GREEN_RGB = [0, 255, 0, 40]
 RED_RGB = [240, 100, 0, 40]
